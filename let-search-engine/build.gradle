@@ -1,0 +1,8 @@
+dependencies {
+    compile project(':let-search-core')
+    compile project(':let-search-repo-mysql')
+    compile project(':let-search-repo-es')
+    compile 'org.springframework:spring-context'
+    compile 'org.springframework.data:spring-data-redis'
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}

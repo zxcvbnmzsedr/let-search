@@ -1,0 +1,4 @@
+dependencies {
+    compile 'org.springframework.data:spring-data-elasticsearch'
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}

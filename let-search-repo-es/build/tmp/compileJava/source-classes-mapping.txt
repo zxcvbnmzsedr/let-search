@@ -1,0 +1,5 @@
+com/shiyisoushu/repo/es/model/BookCrawlerResponseModel.java
+ com.shiyisoushu.repo.es.model.BookCrawlerResponseModel
+ com.shiyisoushu.repo.es.model.BookCrawlerResponseModel$BookCrawlerResponseModelBuilder
+com/shiyisoushu/repo/es/BookCrawlerResponseRepo.java
+ com.shiyisoushu.repo.es.BookCrawlerResponseRepo

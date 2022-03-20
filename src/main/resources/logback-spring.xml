@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <include resource="org/springframework/boot/logging/logback/base.xml"/>
+    <property name="FILE_PATH_ERROR" value="${log_path}/error.log"/>
+    <property name="FILE_PATH_INFO" value="${log_path}/common.log"/>
+
+    <!-- 控制台输出 -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符 -->
+            <pattern>%yellow(%d{yyyy-MM-dd HH:mm:ss.SSS}) %highlight(%-5level) %blue([%thread]) [%X{X-B3-TraceId}]
+                [%X{X-B3-SpanId}] %green(%logger{50}) - %msg%n
+            </pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <!-- 按照每天生成日志文件 -->
+    <appender name="FILE-ERROR"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!--日志文件输出的文件名 -->
+        <File>${FILE_PATH_ERROR}</File>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- 滚动日志文件保存格式 -->
+            <FileNamePattern>${FILE_PATH_ERROR}.%d{yyyy-MM}.log
+            </FileNamePattern>
+            <MaxHistory>5</MaxHistory>
+        </rollingPolicy>
+        <!-- 按临界值过滤日志：低于ERROR以下级别被抛弃 -->
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>ERROR</level>
+        </filter>
+        <encoder>
+            <!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符 -->
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%-5level] [%thread] [%X{X-B3-TraceId}] [%X{X-B3-SpanId}] %logger{50} -
+                %msg%n
+            </pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <appender name="FILE-INFO"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!--日志文件输出的文件名 -->
+        <File>${FILE_PATH_INFO}</File>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!-- 滚动日志文件保存格式 -->
+            <FileNamePattern>${FILE_PATH_INFO}.%d{yyyy-MM-dd}.%i.log
+            </FileNamePattern>
+            <MaxHistory>5</MaxHistory>
+            <maxFileSize>60MB</maxFileSize>
+        </rollingPolicy>
+        <!-- 按临界值过滤日志：低于INFO以下级别被抛弃 -->
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>DEBUG</level>
+        </filter>
+        <encoder>
+            <!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符 -->
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%-5level] [%thread] [%X{X-B3-TraceId}] [%X{X-B3-SpanId}] %logger{50} -
+                %msg%n
+            </pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <springProfile name="local,fat,dev,default">
+        <logger name="org.springframework.web" level="INFO" additivity="false">
+            <appender-ref ref="STDOUT"/>
+            <appender-ref ref="FILE-INFO"/>
+            <appender-ref ref="FILE-ERROR"/>
+        </logger>
+        <logger name="com.cnabc" level="INFO" additivity="false">
+            <appender-ref ref="STDOUT"/>
+            <appender-ref ref="FILE-INFO"/>
+            <appender-ref ref="FILE-ERROR"/>
+        </logger>
+        <!-- 日志输出级别 -->
+        <root level="INFO">
+            <appender-ref ref="STDOUT"/>
+            <appender-ref ref="FILE-INFO"/>
+            <appender-ref ref="FILE-ERROR"/>
+        </root>
+    </springProfile>
+    <logger name="com.cnabc.client">
+        <level value="DEBUG"/>
+    </logger>
+    <logger name="com.cnabc.basic.client">
+        <level value="DEBUG"/>
+    </logger>
+    <springProfile name="prod">
+        <logger name="org.springframework.web" level="ERROR" additivity="false">
+            <appender-ref ref="FILE-INFO"/>
+            <appender-ref ref="FILE-ERROR"/>
+        </logger>
+        <logger name="com.cnabc" level="INFO" additivity="false">
+            <appender-ref ref="FILE-INFO"/>
+            <appender-ref ref="FILE-ERROR"/>
+        </logger>
+        <!-- 日志输出级别 -->
+        <root level="INFO">
+            <appender-ref ref="FILE-INFO"/>
+            <appender-ref ref="FILE-ERROR"/>
+        </root>
+    </springProfile>
+</configuration>

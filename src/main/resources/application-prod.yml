@@ -1,0 +1,22 @@
+spring:
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    jedis:
+      pool:
+        max-idle: 8
+        max-active: 20
+        max-wait: 20
+    timeout: 2000
+    password: tianzeng1818
+  jpa:
+    hibernate:
+      ddl-auto: update
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/let_search?characterEncoding=UTF-8&characterSetResults=UTF-8&zeroDateTimeBehavior=convertToNull&serverTimezone=Asia/Shanghai
+    username: let_search
+    password: tianzeng1818
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  elasticsearch:
+    rest:
+      uris: http://127.0.0.1:9200
